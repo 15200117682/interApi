@@ -19,4 +19,4 @@ Route::get('/info', function () {
 });
 
 
-Route::get("user/login","User\\UserController@login");
+Route::post("user/login","User\\UserController@login");
