@@ -8,6 +8,6 @@ use App\Http\Controllers\Controller;
 class UserController extends Controller
 {
     public function login(){
-        echo 2222;
+        echo 111;
     }
 }
