@@ -5,12 +5,40 @@ namespace App\Http\Controllers\User;
 use App\Model\UserModel;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Str;
 
 class UserController extends Controller
 {
     //登陆
     public function login(Request $request){
         $loginData=$request->input();
+        if(empty($loginData["email"]) || empty($loginData['pwd'])){
+            $arr = [
+                'code' => 40000,
+                'msg' => '内容为空',
+                'data' => [],
+            ];
+            return json_encode($arr,JSON_UNESCAPED_UNICODE);
+        }//验证非空
+        $first=UserModel::where(["email"=>$loginData['email']])->first();
+        if(!$first){
+            $arr = [
+                'code' => 40003,
+                'msg' => '该邮箱未注册，请注册后登陆',
+                'data' => [],
+            ];
+            return json_encode($arr,JSON_UNESCAPED_UNICODE);
+        }//邮箱未注册
+        $token=mb_substr( md5( $first->uid.Str::random(8).mt_rand(11,999999) ) , 10 , 10 );
+        $arr = [
+            'code' => 40003,
+            'msg' => '登陆成功',
+            'data' => [
+                "token"=>$token
+            ],
+        ];
+        return json_encode($arr,JSON_UNESCAPED_UNICODE);
+
     }
 
     //注册
