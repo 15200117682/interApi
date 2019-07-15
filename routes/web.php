@@ -20,3 +20,4 @@ Route::get('/info', function () {
 
 
 Route::post("user/login","User\\UserController@login");
+Route::post("user/reg","User\\UserController@reg");
