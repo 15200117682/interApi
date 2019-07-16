@@ -19,5 +19,6 @@ Route::get('/info', function () {
 });
 
 
-Route::post("user/login","User\\UserController@login");
+Route::post("user/login","User\\UserController@login")->middleware("brush");
 Route::post("user/reg","User\\UserController@reg");
+Route::post("user/index","User\\UserController@index");

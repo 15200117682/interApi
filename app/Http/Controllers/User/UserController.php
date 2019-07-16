@@ -3,51 +3,85 @@
 namespace App\Http\Controllers\User;
 
 use App\Model\UserModel;
-use App\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Str;
-use App\Tools\JWTAuth\JWTAuths;
+
+//use App\Tools\JWTAuth\JWTAuths;
 
 class UserController extends Controller
 {
+    public function __construct()
+    {
+        $this->status = [
+            "200" => "success",
+            "40000" => "必填项不能为空",
+            "40002" => "邮箱已经注册",
+            "40003" => "两次输入密码不一致",
+            "40004" => "未知错误，注册失败",
+            "40005" => "email未注册",
+            "40006" => "账号密码输入错误"
+        ];
+    }
+
+    public function fail($code = null, $msg = null, $data = null)
+    {
+        $response = [
+            "code" => $code,
+            "msg" => $msg,
+            "data" => $data
+        ];
+        return json_encode($response, JSON_UNESCAPED_UNICODE);
+    }
+
+    public function index(Request $request)
+    {
+        $to = $request->input();
+        $ken = decrypt($to['token']);
+        $data = unserialize($ken);
+        $username = $data["username"];
+        $arr = [
+            'code' => 200,
+            'msg' => 'success',
+            'data' => $username,
+        ];
+        return json_encode($arr, JSON_UNESCAPED_UNICODE);
+    }
+
     /**
      * 登陆
      * @param Request $request
      * @return false|string
      */
-    public function login(Request $request){
-        $loginData=$request->input();
-        if(empty($loginData["email"]) || empty($loginData['pwd'])){
-            $arr = [
-                'code' => 40000,
-                'msg' => '内容为空',
-                'data' => [],
-            ];
-            return json_encode($arr,JSON_UNESCAPED_UNICODE);
-        }//验证非空
-        $first=UserModel::where(["email"=>$loginData['email']])->first();
-        if(!$first){
-            $arr = [
-                'code' => 40004,
-                'msg' => '该邮箱未注册，请注册后登陆',
-                'data' => [],
-            ];
-            return json_encode($arr,JSON_UNESCAPED_UNICODE);
-        }//邮箱未注册
-        /*$token=mb_substr( md5( $first->uid.Str::random(8).mt_rand(11,999999) ) , 10 , 10 );*/
-        $obj=JWTAuths::getInstance();
-        $uid=$first->uid;
-        $token=$obj->uid($uid)->encode()->token();
-        $arr = [
-            'code' => 40003,
-            'msg' => '登陆成功',
-            'data' => [
-                "token"=>$token,
-                'uid'=>$uid
-            ],
-        ];
-        return json_encode($arr,JSON_UNESCAPED_UNICODE);
+    public function login(Request $request)
+    {
+        $obj = new UserModel();
+        $loginData = $request->input();
+        //验证非空
+        if (empty($loginData["email"]) || empty($loginData['pwd'])) {
+
+            return $this->fail("40000", $this->status['40000']);
+
+        }
+        $first = UserModel::where(["email" => $loginData['email']])->first();
+
+        //未注册
+        if (!$first) {
+
+            return $this->fail("40005", $this->status['40005']);
+
+        }
+        //验证密码
+        if (!password_verify($loginData['pwd'], $first->pwd)) {
+
+            return $this->fail("40006", $this->status['40006']);
+
+        }
+
+        $uid = $first->uid;
+        $username = $first->username;
+        $token = $obj->setsalt()->createtoken($uid, $username);
+
+        return $this->fail("200", $this->status['200'],$token);
 
     }
 
@@ -56,57 +90,50 @@ class UserController extends Controller
      * @param Request $request
      * @return false|string
      */
-    public function reg(Request $request){
+    public function reg(Request $request)
+    {
         $regData = $request->input();
-        if(empty($regData['username']) || empty($regData['pwd']) || empty($regData['pwd_confirm']) || empty($regData['email'])){
-            $arr = [
-                'code' => 40000,
-                'msg' => '内容为空',
-                'data' => [],
-            ];
-            return json_encode($arr,JSON_UNESCAPED_UNICODE);
-        }//非空验证
-        $first=UserModel::where(['email'=>$regData["email"]])->first();
-        if($first){
-            $arr = [
-                'code' => 40006,
-                'msg' => '邮箱已经注册，请直接登陆',
-                'data' => [],
-            ];
-            return json_encode($arr,JSON_UNESCAPED_UNICODE);
+        //非空验证
+        if (empty($regData['username']) || empty($regData['pwd']) || empty($regData['pwd_confirm']) || empty($regData['email'])) {
+
+            return $this->fail("40000", $this->status['40000']);
+
         }
-        if(!$regData['pwd'] == $regData['pwd_confirm']){
-            $arr = [
-                'code' => 40001,
-                'msg' => '请检查确认密码和密码是否一致',
-                'data' => [],
-            ];
-            return json_encode($arr,JSON_UNESCAPED_UNICODE);
-        }//密码错误
-        $pwd=password_hash($regData['pwd'],PASSWORD_DEFAULT);
-        $arr=[
-            "username"=>$regData["username"],
-            "pwd"=>$pwd,
-            "email"=>$regData["email"],
-            "time"=>time()
+        $first = UserModel::where(['email' => $regData["email"]])->first();
+
+        //已注册
+        if ($first) {
+
+            return $this->fail("40002", $this->status['40002']);
+
+        }
+
+        //密码错误
+        if (!$regData['pwd'] == $regData['pwd_confirm']) {
+
+            return $this->fail("40003", $this->status['40003']);
+
+        }
+        $pwd = password_hash($regData['pwd'], PASSWORD_DEFAULT);
+        $arr = [
+            "username" => $regData["username"],
+            "pwd" => $pwd,
+            "email" => $regData["email"],
+            "time" => time()
         ];
         $userReg = UserModel::insertGetId($arr);
-            if($userReg){
-                $arr= [
-                    'code' => 200,
-                    'msg' => 'success 请等待跳转',
-                    'data' => $userReg,
-                ];
-                return json_encode($arr,JSON_UNESCAPED_UNICODE);
-            }else{
-                $arr = [
-                    'code' => 40002,
-                    'msg' => '注册失败请重新尝试',
-                    'data' => [],
-                ];
-                return json_encode($arr,JSON_UNESCAPED_UNICODE);
-            }//返回结果
+
+        //返回结果
+        if ($userReg) {
+
+            return $this->fail("200", $this->status['200']);
+
+        } else {
+
+            return $this->fail("40004", $this->status['40004']);
+
         }
+    }
 
 
 }
