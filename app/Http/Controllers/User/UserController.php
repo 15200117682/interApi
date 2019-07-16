@@ -10,7 +10,11 @@ use App\Tools\JWTAuth\JWTAuths;
 
 class UserController extends Controller
 {
-    //登陆
+    /**
+     * 登陆
+     * @param Request $request
+     * @return false|string
+     */
     public function login(Request $request){
         $loginData=$request->input();
         if(empty($loginData["email"]) || empty($loginData['pwd'])){
@@ -30,7 +34,7 @@ class UserController extends Controller
             ];
             return json_encode($arr,JSON_UNESCAPED_UNICODE);
         }//邮箱未注册
-        //$token=mb_substr( md5( $first->uid.Str::random(8).mt_rand(11,999999) ) , 10 , 10 );
+        /*$token=mb_substr( md5( $first->uid.Str::random(8).mt_rand(11,999999) ) , 10 , 10 );*/
         $obj=JWTAuths::getInstance();
         $uid=$first->uid;
         $token=$obj->uid($uid)->encode()->token();
@@ -46,7 +50,11 @@ class UserController extends Controller
 
     }
 
-    //注册
+    /**
+     * 注册
+     * @param Request $request
+     * @return false|string
+     */
     public function reg(Request $request){
         $regData = $request->input();
         if(empty($regData['username']) || empty($regData['pwd']) || empty($regData['pwd_confirm']) || empty($regData['email'])){
@@ -87,7 +95,7 @@ class UserController extends Controller
                     'data' => [],
                 ];
                 return json_encode($arr,JSON_UNESCAPED_UNICODE);
-            }
+            }//返回结果
         }
 
 
