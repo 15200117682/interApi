@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\User;
 
 use App\Model\UserModel;
+use App\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Str;
@@ -28,7 +29,7 @@ class UserController extends Controller
         $first=UserModel::where(["email"=>$loginData['email']])->first();
         if(!$first){
             $arr = [
-                'code' => 40003,
+                'code' => 40004,
                 'msg' => '该邮箱未注册，请注册后登陆',
                 'data' => [],
             ];
@@ -65,6 +66,15 @@ class UserController extends Controller
             ];
             return json_encode($arr,JSON_UNESCAPED_UNICODE);
         }//非空验证
+        $first=UserModel::where(['email'=>$regData["email"]])->first();
+        if($first){
+            $arr = [
+                'code' => 40006,
+                'msg' => '邮箱已经注册，请直接登陆',
+                'data' => [],
+            ];
+            return json_encode($arr,JSON_UNESCAPED_UNICODE);
+        }
         if(!$regData['pwd'] == $regData['pwd_confirm']){
             $arr = [
                 'code' => 40001,
