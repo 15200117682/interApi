@@ -6,6 +6,7 @@ use App\Model\UserModel;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Str;
+use App\Tools\JWTAuth\JWTAuths;
 
 class UserController extends Controller
 {
@@ -29,12 +30,16 @@ class UserController extends Controller
             ];
             return json_encode($arr,JSON_UNESCAPED_UNICODE);
         }//邮箱未注册
-        $token=mb_substr( md5( $first->uid.Str::random(8).mt_rand(11,999999) ) , 10 , 10 );
+        //$token=mb_substr( md5( $first->uid.Str::random(8).mt_rand(11,999999) ) , 10 , 10 );
+        $obj=JWTAuths::getInstance();
+        $uid=$first->uid;
+        $token=$obj->uid($uid)->encode()->token();
         $arr = [
             'code' => 40003,
             'msg' => '登陆成功',
             'data' => [
-                "token"=>$token
+                "token"=>$token,
+                'uid'=>$uid
             ],
         ];
         return json_encode($arr,JSON_UNESCAPED_UNICODE);
