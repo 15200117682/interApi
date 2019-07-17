@@ -41,10 +41,15 @@ class GoodsController extends Controller
      */
     public function goodslist()
     {
-        $data = GoodsModel::all()->toArray();
+        $data = GoodsModel::where(["goods_status"=>1])->get()->toArray();
+        $datainfo=GoodsModel::where(["goods_status"=>1])->orderBy("goods_id","desc")->limit(4)->get()->toArray();
+        $arr=[
+            "data"=>$data,
+            "datainfo"=>$datainfo
+        ];
         if ($data) {
 
-            return $this->fail("200", $this->status["200"], $data);
+            return $this->fail("200", $this->status["200"], $arr);
 
         } else {
 
