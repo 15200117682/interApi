@@ -19,6 +19,6 @@ Route::get('/info', function () {
 });
 
 
-Route::post("user/login","User\\UserController@login")->middleware("brush");
-Route::post("user/reg","User\\UserController@reg");
-Route::post("user/index","User\\UserController@index");
+Route::post("user/login","User\\UserController@login")->middleware("brush");    //登陆
+Route::post("user/reg","User\\UserController@reg");                             //注册
+Route::post("user/index","User\\UserController@index");                         //首页
