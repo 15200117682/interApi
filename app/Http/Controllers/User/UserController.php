@@ -39,12 +39,8 @@ class UserController extends Controller
         $ken = decrypt($to['token']);
         $data = unserialize($ken);
         $username = $data["username"];
-        $arr = [
-            'code' => 200,
-            'msg' => 'success',
-            'data' => $username,
-        ];
-        return json_encode($arr, JSON_UNESCAPED_UNICODE);
+        
+        return $this->fail("200",$this->status["200"],$username);
     }
 
     /**
