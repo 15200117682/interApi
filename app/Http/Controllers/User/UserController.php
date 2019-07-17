@@ -19,7 +19,8 @@ class UserController extends Controller
             "40003" => "两次输入密码不一致",
             "40004" => "未知错误，注册失败",
             "40005" => "email未注册",
-            "40006" => "账号密码输入错误"
+            "40006" => "账号密码输入错误",
+            "40007" => "非法请求"
         ];
     }
 
@@ -39,8 +40,16 @@ class UserController extends Controller
         $ken = decrypt($to['token']);
         $data = unserialize($ken);
         $username = $data["username"];
-        
-        return $this->fail("200",$this->status["200"],$username);
+        if($username==""){
+
+            return $this->fail("40007",$this->status["40007"]);
+
+        }else{
+
+            return $this->fail("200",$this->status["200"],$username);
+
+        }
+
     }
 
     /**

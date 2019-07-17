@@ -18,7 +18,13 @@ Route::get('/info', function () {
     phpinfo();
 });
 
+Route::post("goods/goodslist","Goods\\GoodsController@goodslist");
 
-Route::post("user/login","User\\UserController@login")->middleware("brush");    //登陆
-Route::post("user/reg","User\\UserController@reg");                             //注册
-Route::post("user/index","User\\UserController@index");                         //首页
+Route::group(['middleware'=>['brush']],function(){
+    Route::post("user/login","User\\UserController@login");    //用户登陆
+    Route::post("user/reg","User\\UserController@reg");        //用户注册
+    Route::post("user/index","User\\UserController@index");    //项目首页
+});         //防刷路由中间件组
+
+
+
