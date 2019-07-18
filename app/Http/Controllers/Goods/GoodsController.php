@@ -69,13 +69,13 @@ class GoodsController extends Controller
             return $this->fail("40000", $this->status["40000"]);
 
         }
-        $first=GoodsModel::where(["goods_id"=>$goods_id])->first()->toArray();
-
+        $first=GoodsModel::where(["goods_id"=>$goods_id])->count();
         //商品不存在
         if(!$first){
             return $this->fail("40009", $this->status["40009"]);
         }
 
-        return $this->fail(200,$this->status["200"],$first);
+        $data=GoodsModel::where(["goods_id"=>$goods_id])->first()->toArray();
+        return $this->fail(200,$this->status["200"],$data);
     }
 }
