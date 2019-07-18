@@ -61,21 +61,21 @@ class GoodsController extends Controller
     }
 
     public function goodsdetails(Request $request){
-        $uid=$request->input("uid");
+        $goods_id=$request->input("goods_id");
 
         //非空验证
-        if(empty($uid)){
+        if(empty($goods_id)){
 
             return $this->fail("40000", $this->status["40000"]);
 
         }
-        $first=GoodsModel::where(["goods_id"=>$uid])->first()->toArray();
-
+        $first=GoodsModel::where(["goods_id"=>$goods_id])->first()->toArray();
+        
         //商品不存在
         if(!$first){
             return $this->fail("40009", $this->status["40009"]);
         }
-        
+
         return $this->fail(200,$this->status["200"],$first);
     }
 }
