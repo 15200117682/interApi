@@ -61,7 +61,7 @@ class GoodsController extends Controller
     }
 
     public function goodsdetails(Request $request){
-        $goods_id=$request->input("goods_id");//接受商品id
+        $goods_id=$request->input("goods_id");
 
         //非空验证
         if(empty($goods_id)){
