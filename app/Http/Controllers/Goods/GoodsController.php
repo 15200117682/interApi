@@ -75,7 +75,7 @@ class GoodsController extends Controller
             return $this->fail("40009", $this->status["40009"]);
         }
 
-        $data=GoodsModel::where(["goods_id"=>$goods_id])->first()->toArray();
+        $data=GoodsModel::where(["goods_id"=>$goods_id])->first()->toArray();//商品详情转数组
         return $this->fail(200,$this->status["200"],$data);
     }
 }
