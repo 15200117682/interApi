@@ -16,7 +16,9 @@ class GoodsController extends Controller
     {
         $this->status = [
             "200" => "success",
-            "40008" => "未知原因，未能获取商品信息"
+            "40000"=>"未能找到商品，非法请求",
+            "40008" => "未知原因，未能获取商品信息",
+            "40009" =>"未能找到商品，错误的商品信息",
         ];
     }
 
@@ -56,5 +58,24 @@ class GoodsController extends Controller
             return $this->fail("40008", $this->status["40008"]);
 
         }
+    }
+
+    public function goodsdetails(Request $request){
+        $uid=$request->input("uid");
+
+        //非空验证
+        if(empty($uid)){
+
+            return $this->fail("40000", $this->status["40000"]);
+
+        }
+        $first=GoodsModel::where(["goods_id"=>$uid])->first()->toArray();
+
+        //商品不存在
+        if(!$first){
+            return $this->fail("40009", $this->status["40009"]);
+        }
+        
+        return $this->fail(200,$this->status["200"],$first);
     }
 }

@@ -19,6 +19,7 @@ Route::get('/info', function () {
 });
 
 Route::post("goods/goodslist","Goods\\GoodsController@goodslist");
+Route::post("goods/goodsdetails","Goods\\GoodsController@goodsdetails");
 
 Route::group(['middleware'=>['brush']],function(){
     Route::post("user/login","User\\UserController@login");    //用户登陆
