@@ -104,7 +104,7 @@ class CartController extends Controller
             }
         } else {
             //该用户想加入购物车的商品本身存在
-            $res = CartModel::where(["uid" => $uid])->where(["goods_id" => $cartData["goods_id"]])->increment("goods_number");
+            $res = CartModel::where(["uid" => $uid])->where(["goods_id" => $cartData["goods_id"]])->increment("goods_num");
             if ($res) {
 
                 return $this->fail("200", $this->status['200']);
