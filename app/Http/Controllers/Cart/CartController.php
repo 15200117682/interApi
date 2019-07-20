@@ -148,7 +148,9 @@ class CartController extends Controller
 
         }else{
 
-            $info = CartModel::where(["uid" => $uid])->where(["cart_status" => 1])->get()->toArray();
+            $info = CartModel::where(["uid" => $uid])->where(["cart_status" => 1])
+                    ->join('goods','goods.goods_id','=','cart.goods_id')
+                    ->get()->toArray();
             return $this->fail("200", $this->status["200"],$info);
 
         }
