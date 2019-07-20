@@ -118,6 +118,11 @@ class CartController extends Controller
 
     }
 
+    /**
+     * 购物车展示
+     * @param Request $request
+     * @return false|string
+     */
     public function cartlist(Request $request)
     {
         $data = $request->input();
