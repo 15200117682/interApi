@@ -18,8 +18,9 @@ Route::get('/info', function () {
     phpinfo();
 });
 
-Route::post("goods/goodslist","Goods\\GoodsController@goodslist");
-Route::post("goods/goodsdetails","Goods\\GoodsController@goodsdetails");
+Route::post("goods/goodslist","Goods\\GoodsController@goodslist");      //商品的查询
+Route::post("goods/goodsdetails","Goods\\GoodsController@goodsdetails");//单个商品的详情查询
+Route::post("cart/cartadd","Cart\\CartController@cartadd");//加入购物车
 
 Route::group(['middleware'=>['brush']],function(){
     Route::post("user/login","User\\UserController@login");    //用户登陆
