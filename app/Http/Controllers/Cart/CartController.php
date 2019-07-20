@@ -21,7 +21,8 @@ class CartController extends Controller
             "40000" => "参数不能为空,注意字段",
             "40004" => "未知错误，加入购物车失败",
             "40010" => "找不到商品",
-            "40011" => "找不到用户"
+            "40011" => "找不到用户",
+            "40012" => "购物车为空",
         ];
     }
 
@@ -115,6 +116,42 @@ class CartController extends Controller
             }
         }
 
+    }
+
+    public function cartlist(Request $request)
+    {
+        $data = $request->input();
+
+        //非空
+        if (empty($data['token'])) {
+
+            return $this->fail("40000", $this->status["40000"]);
+
+        }
+
+        $ken = decrypt($data['token']);
+        $data = unserialize($ken);//登陆状态的用户信息
+        $uid = $data["uid"];
+        $user_first = UserModel::where(["uid" => $uid])->first();
+        //找不到用户
+        if (!$user_first) {
+
+            return $this->fail("40011", $this->status["40011"]);
+
+        }
+
+        //购物车为空
+        $datainfo = CartModel::where(["uid" => $uid])->where(["cart_status" => 1])->count();
+        if ($datainfo == 0) {
+
+            return $this->fail("40012", $this->status["40012"]);
+
+        }else{
+
+            $info = CartModel::where(["uid" => $uid])->where(["cart_status" => 1])->get()->toArray();
+            return $this->fail("200", $this->status["200"],$info);
+
+        }
     }
 
 }
