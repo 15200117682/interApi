@@ -31,7 +31,7 @@ Route::group(['middleware'=>['brush']],function(){
 });         //防刷路由中间件组
 
 
-Route::get("exem/exemlist","Exem\\ExemController@list");//考试
+Route::post("exem/exemlist","Exem\\ExemController@list");//考试
 
 
 
