@@ -31,7 +31,10 @@ Route::group(['middleware'=>['brush']],function(){
 });         //防刷路由中间件组
 
 
-Route::post("exem/exemlist","Exem\\ExemController@list");//考试
+Route::get("exem/exemlist","Exem\\ExemController@exemlist");//考试
+Route::get("exem/exemadd","Exem\\ExemController@exemadd");//考试
+
+Route::get("ceshi/login","Exem\\ExemController@login");       //签名测试
 
 
 
