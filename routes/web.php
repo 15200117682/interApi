@@ -38,8 +38,9 @@ Route::get("ceshi/login","Exem\\ExemController@login");       //签名测试
 
 Route::post("ceshi/goodsadd","OneWeek\\OneWeekController@insert");       //商品添加测试
 Route::post("ceshi/goodslist","OneWeek\\OneWeekController@select");       //商品展示测试
-Route::post("ceshi/delete","OneWeek\\OneWeekController@delete");       //商品展示测试
-Route::post("ceshi/update","OneWeek\\OneWeekController@update");       //商品展示测试
+Route::post("ceshi/goodsfind","OneWeek\\OneWeekController@goodsfind");       //商品展示测试
+Route::post("ceshi/delete","OneWeek\\OneWeekController@delete");       //商品删除测试
+Route::post("ceshi/update","OneWeek\\OneWeekController@update");       //商品修改测试
 
 
 

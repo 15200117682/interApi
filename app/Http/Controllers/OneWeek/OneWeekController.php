@@ -82,6 +82,21 @@ class OneWeekController extends Controller
     }
 
     /**
+     * 查询一条数据
+     * @param Request $request
+     * @return false|string
+     */
+    public function goodsfind(Request $request){
+        $id=$request->input();
+        if(empty($id['g_id'])){
+
+            return $this->fail("40000",$this->status["40000"]);
+
+        }
+        $data=CeGoodsModel::where(['g_id'=>$id["g_id"]])->first();
+        return $this->fail("200",$this->status["200"],$data);
+    }
+    /**
      * 商品删除
      * @param Request $request
      * @return false|string
