@@ -36,5 +36,8 @@ Route::get("exem/exemadd","Exem\\ExemController@exemadd");//考试
 
 Route::get("ceshi/login","Exem\\ExemController@login");       //签名测试
 
+Route::post("ceshi/goodsadd","OneWeek\\OneWeekController@insert");       //商品添加测试
+Route::post("ceshi/goodslist","OneWeek\\OneWeekController@select");       //商品展示测试
+
 
 
