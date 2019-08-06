@@ -37,6 +37,7 @@ class RestfulController extends Controller
     public function index()
     {
         $data=CeGoodsModel::get()->toArray();
+
         if(empty($data)){
 
             return $this->fail("40003",$this->status["40003"]);
