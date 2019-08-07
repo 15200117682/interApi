@@ -42,6 +42,9 @@ Route::post("ceshi/goodsfind","OneWeek\\OneWeekController@goodsfind");       //�
 Route::post("ceshi/delete","OneWeek\\OneWeekController@delete");       //商品删除测试
 Route::post("ceshi/update","OneWeek\\OneWeekController@update");       //商品修改测试
 
+
+Route::get("ceshi/uploadadd","OneWeek\\OneWeekController@uploadadd");       //商品修改测试
+
 Route::resource('ceshi/posts', 'OneWeek\\RestfulController');       //restful风格单一资源测试
 
 

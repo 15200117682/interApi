@@ -150,5 +150,12 @@ class OneWeekController extends Controller
 
     }
 
+    /**
+     * 文件上传
+     */
+    public function uploadadd(){
+        return view("upload.uploadadd");
+    }
+
 
 }
