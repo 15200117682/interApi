@@ -44,6 +44,10 @@ Route::post("ceshi/update","OneWeek\\OneWeekController@update");       //商品�
 
 
 Route::get("ceshi/uploadadd","OneWeek\\OneWeekController@uploadadd");       //商品修改测试
+Route::get("ceshi/encrypt","OneWeek\\OneWeekController@encrypt");       //对称加密测试
+Route::get("ceshi/Noencrypt","OneWeek\\OneWeekController@Noencrypt");       //非对称加密测试
+Route::get("ceshi/shubao","OneWeek\\OneWeekController@shubao");       //数组加密测试
+Route::get("ceshi/foreignUrl","OneWeek\\OneWeekController@foreignUrl");       //对外的url加密
 
 Route::resource('ceshi/posts', 'OneWeek\\RestfulController');       //restful风格单一资源测试
 

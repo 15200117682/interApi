@@ -12,6 +12,7 @@ class OneWeekController extends Controller
     {
         $this->status=[
             "200"=>"ok",
+            "201"=>"获取成功",
             "40000"=>"必填项不能为空",
             "40001"=>"商品已存在",
             "40002"=>"未知原因，添加商品失败",
@@ -155,6 +156,69 @@ class OneWeekController extends Controller
      */
     public function uploadadd(){
         return view("upload.uploadadd");
+    }
+
+    //对称加密解密
+    public function encrypt(){
+        //var_dump(md5("1812"."袁帅"."100"));exit;
+        $str="sha1tianwen";
+        $key="1234567890123456";
+        $iv="sginfdcvbnfgvbdc";
+        /*$enStr=openssl_encrypt($str,"AES-128-CBC",$key,OPENSSL_RAW_DATA,$iv);//加密
+        var_dump($enStr);echo "<br/>";*/
+        $enStr1="PcxKE55kH/MeS+AxIGfZF71+WhQadHAoD3lYqp9qBU4dDAZwtEmUrzGSHkYebtsy";
+        $enStr=base64_decode($enStr1);
+        $deStr=openssl_decrypt($enStr,"aes-128-ecb",$key,OPENSSL_RAW_DATA);//解密
+        var_dump($deStr);
+    }
+
+    public function Noencrypt(){
+        $str="添雯sha1";
+        $key=openssl_get_publickey("file://".storage_path("keys/rsa_public_key.pem"));//获取公钥
+        openssl_public_encrypt($str,$encrypt,$key);//加密
+        echo "加密的结果：";var_dump($encrypt);echo "<br/>";
+        $keys=openssl_get_privatekey("file://".storage_path("keys/rsa_private.pem"));//获取私钥
+        openssl_private_decrypt($encrypt,$decrypt,$keys);//解密
+        echo "解密的结果：";var_dump($decrypt);
+    }
+
+    public function shubao(){
+        $str="宝贝儿你真美";
+
+        //加密
+        $enstr=base64_encode($str);
+        $length=strlen($enstr);
+        $arr="";
+        for ($i=0;$i<$length;$i++){
+            $k=ord($enstr[$i]);
+            $v=$k+3;
+            $arr.=chr($v);
+        }
+
+        //解密
+        $dearr="";
+        $strlen=strlen($arr);
+        for ($i=0;$i<$strlen;$i++){
+            $k=ord($arr[$i]);
+            $v=$k-3;
+            $dearr.=chr($v);
+        }
+        $res=base64_decode($dearr);
+        echo $res;
+    }
+
+
+    public function foreignUrl(){
+        //$url2=$_SERVER["HTTP_HOST"];
+        $url="https://interapi.qiong001.com/ceshi/posts";
+        $key=openssl_get_privatekey("file://".storage_path("keys/rsa_private.pem"));//获取私钥
+        openssl_private_encrypt($url,$encrypt,$key);//加密
+        $data=base64_encode($encrypt);
+        $arr=[
+            "encrypt"=>$data
+        ];
+        return $this->fail("201",$this->status["201"],$arr);
+
     }
 
 
