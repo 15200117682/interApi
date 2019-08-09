@@ -221,5 +221,18 @@ class OneWeekController extends Controller
 
     }
 
+    public function foreignDoUrl(){
+        //$url2=$_SERVER["HTTP_HOST"];
+        $url="https://interapi.qiong001.com/ceshi/posts";
+        $key="onetwothree";
+        $enStr=openssl_encrypt($url,"AES-128-ECB",$key,OPENSSL_RAW_DATA);//加密
+        $data=base64_encode($enStr);
+        $arr=[
+            "data"=>$data
+        ];
+        return $this->fail("201",$this->status["201"],$arr);
+
+    }
+
 
 }
