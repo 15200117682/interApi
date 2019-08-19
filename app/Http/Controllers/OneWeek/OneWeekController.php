@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\OneWeek;
 
 use App\Model\CeGoodsModel;
+use App\Model\UserModel;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -18,6 +19,8 @@ class OneWeekController extends Controller
             "40002"=>"未知原因，添加商品失败",
             "40003"=>"没有商品",
             "40004"=>"缺少参数",
+            "40005"=>"账号不存在",
+            "40006"=>"账号密码错误"
         ];
     }
 
@@ -231,6 +234,36 @@ class OneWeekController extends Controller
         ];
         return $this->fail("201",$this->status["201"],$arr);
 
+    }
+
+
+    //登陆
+    public function login(Request $request){
+        $loginData=$request->input();
+        //空
+        if(empty($loginData['email']) || empty($loginData["pwd"])){
+
+            return $this->fail("40000",$this->status["40000"]);
+
+        }
+        //账号
+        $first=UserModel::where(["email"=>$loginData['email']])->first();
+        if(!$first){
+
+            return $this->fail("40005",$this->status["40005"]);
+
+        }
+        //验证密码
+        if (!password_verify($loginData['pwd'], $first->pwd)) {
+
+            return $this->fail("40006", $this->status['40006']);
+
+        }
+        $obj = new UserModel();
+        $uid = $first->uid;
+        $username = $first->username;
+        $token = $obj->setsalt()->createtoken($uid, $username);
+        return $this->fail("200", $this->status['200'],$token);
     }
 
 
