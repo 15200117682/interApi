@@ -275,8 +275,7 @@ class OneWeekController extends Controller
     public function goodshot(){
 
         $data=Cache::get("goodshot");
-        $get=GoodsModel::take(4)->get();
-        dd($get);
+        //$get=GoodsModel::take(4)->get();
         if(empty($data)){
 
             $data=GoodsModel::orderBy("goods_id","desc")->limit(4)->get()->toArray();
