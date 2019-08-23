@@ -53,6 +53,7 @@ Route::get("ceshi/foreignDoUrl","OneWeek\\OneWeekController@foreignDoUrl");     
 Route::resource('ceshi/posts', 'OneWeek\\RestfulController');       //restful风格单一资源测试
 
 Route::post('ceshi/login', 'OneWeek\\OneWeekController@login');       //测试登陆
+Route::post('ceshi/goodshot', 'OneWeek\\OneWeekController@goodshot');       //测试最新商品
 
 
 

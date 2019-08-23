@@ -3,9 +3,12 @@
 namespace App\Http\Controllers\OneWeek;
 
 use App\Model\CeGoodsModel;
+use App\Model\GoodsModel;
 use App\Model\UserModel;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Redis;
 
 class OneWeekController extends Controller
 {
@@ -265,6 +268,27 @@ class OneWeekController extends Controller
         $token = $obj->setsalt()->createtoken($uid, $username);
         return $this->fail("200", $this->status['200'],$token);
     }
+
+    /**
+     * 热卖商品列表
+     */
+    public function goodshot(){
+
+        $data=Cache::get("goodshot");
+        $get=GoodsModel::take(4)->get();
+        dd($get);
+        if(empty($data)){
+
+            $data=GoodsModel::orderBy("goods_id","desc")->limit(4)->get()->toArray();
+            Cache::put("goodshot",$data);
+
+        }
+
+        return $this->fail("200",$this->status["200"],$data);
+    }
+
+
+
 
 
 }
