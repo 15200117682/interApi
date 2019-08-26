@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\OneWeek;
 
+use App\Model\CartModel;
 use App\Model\CeGoodsModel;
 use App\Model\GoodsModel;
 use App\Model\UserModel;
@@ -277,8 +278,7 @@ class OneWeekController extends Controller
         $data=Cache::get("goodshot");
         //$get=GoodsModel::take(4)->get();
         if(empty($data)){
-
-            $data=GoodsModel::orderBy("goods_id","desc")->limit(4)->get()->toArray();
+            $data=GoodsModel::inRandomOrder()->take(4)->get()->toArray();
             Cache::put("goodshot",$data);
 
         }
@@ -289,8 +289,14 @@ class OneWeekController extends Controller
     public function detail(Request $request){
         $goods_id=$request->input();
         $goodsData=GoodsModel::where(["goods_id"=>$goods_id['goods_id']])->first()->toArray();
-        
+
         return $this->fail("200",$this->status["200"],$goodsData);
+    }
+
+    //分类查询
+    public function cartcory(){
+        $cartData=CartModel::get()->toArray();
+        return $this->fail("200",$this->status["200"],$cartData);
     }
 
 
