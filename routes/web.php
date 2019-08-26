@@ -56,7 +56,7 @@ Route::post('ceshi/login', 'OneWeek\\OneWeekController@login');       //测试�
 Route::post('ceshi/goodshot', 'OneWeek\\OneWeekController@goodshot');       //测试最新商品
 Route::post('ceshi/detail/', 'OneWeek\\OneWeekController@detail');       //测试商品详情
 Route::post('ceshi/cartcory', 'OneWeek\\OneWeekController@cartcory');       //测试分类
-Route::post('ceshi/corygoods', 'OneWeek\\OneWeekController@corygoods');       //测试根据分类查商品
+Route::post('ceshi/corygoods/{c_id}', 'OneWeek\\OneWeekController@corygoods');       //测试根据分类查商品
 
 
 
