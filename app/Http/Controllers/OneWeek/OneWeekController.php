@@ -301,7 +301,8 @@ class OneWeekController extends Controller
     }
 
     //根据分类查商品
-    public function corygoods($c_id){
+    public function corygoods(Request $request){
+        $c_id=$request->input();
         $cartData=GoodsModel::where(["cate_id"=>$c_id])->get()->toArray();
         return $this->fail("200",$this->status["200"],$cartData);
     }
