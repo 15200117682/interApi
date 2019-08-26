@@ -286,12 +286,9 @@ class OneWeekController extends Controller
         return $this->fail("200",$this->status["200"],$data);
     }
 
-    public function detail($goods_id){
-        $goodsData=Cache::get("goodsDetail");
-        if(empty($goodsData)){
-            $goodsData=GoodsModel::where(["goods_id"=>$goods_id])->first()->toArray();
-            cache::put("goodsDetail",$goodsData);
-        }
+    public function detail(Request $request){
+        $goods_id=$request->input();
+        $goodsData=GoodsModel::where(["goods_id"=>$goods_id['goods_id']])->first()->toArray();
         
         return $this->fail("200",$this->status["200"],$goodsData);
     }

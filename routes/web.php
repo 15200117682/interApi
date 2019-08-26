@@ -54,7 +54,7 @@ Route::resource('ceshi/posts', 'OneWeek\\RestfulController');       //restful风
 
 Route::post('ceshi/login', 'OneWeek\\OneWeekController@login');       //测试登陆
 Route::post('ceshi/goodshot', 'OneWeek\\OneWeekController@goodshot');       //测试最新商品
-Route::post('ceshi/detail/{goods_id}', 'OneWeek\\OneWeekController@detail');       //测试商品详情
+Route::post('ceshi/detail/', 'OneWeek\\OneWeekController@detail');       //测试商品详情
 
 
 
