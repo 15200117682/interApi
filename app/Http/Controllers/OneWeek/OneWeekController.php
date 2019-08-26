@@ -4,6 +4,7 @@ namespace App\Http\Controllers\OneWeek;
 
 use App\Model\CartModel;
 use App\Model\CeGoodsModel;
+use App\Model\CoryModel;
 use App\Model\GoodsModel;
 use App\Model\UserModel;
 use Illuminate\Http\Request;
@@ -295,7 +296,7 @@ class OneWeekController extends Controller
 
     //分类查询
     public function cartcory(){
-        $cartData=CartModel::get()->toArray();
+        $cartData=CoryModel::get()->toArray();
         return $this->fail("200",$this->status["200"],$cartData);
     }
 
