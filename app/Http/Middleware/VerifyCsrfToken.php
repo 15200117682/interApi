@@ -24,5 +24,6 @@ class VerifyCsrfToken extends Middleware
         "goods*",
         "cart*",
         "ceshi*",
+        "weather",
     ];
 }

@@ -307,7 +307,9 @@ class OneWeekController extends Controller
         return $this->fail("200",$this->status["200"],$cartData);
     }
 
-
-
+    //查找当前商品的属性
+    public function goodsAttr(Request $request){
+        $goods_id=$request->input();
+    }
 
 }

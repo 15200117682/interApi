@@ -58,5 +58,6 @@ Route::post('ceshi/detail/', 'OneWeek\\OneWeekController@detail');       //测�
 Route::post('ceshi/cartcory', 'OneWeek\\OneWeekController@cartcory');       //测试分类
 Route::post('ceshi/corygoods', 'OneWeek\\OneWeekController@corygoods');       //测试根据分类查商品
 
+Route::post("weather","FourWeek\\FourWeekController@weather");       //调用天气接口
 
 
