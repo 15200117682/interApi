@@ -72,9 +72,13 @@ class FourWeekController extends Controller
         }
         $key="weather".$city;
         $redisData=Redis::get($key);
+
+        $redisData=json_decode($redisData,JSON_UNESCAPED_UNICODE);
         if(empty($redisData)){
             $redisData=WeatherModel::where(["citynm"=>$city])->first()->toArray();
+            $redisData=json_encode($redisData,JSON_UNESCAPED_UNICODE);
             Redis::set($key,$redisData,30);
+            $redisData=json_decode($redisData,JSON_UNESCAPED_UNICODE);
         }
         return $this->fail("200",$this->status["200"],$redisData);
     }
