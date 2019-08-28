@@ -59,5 +59,7 @@ Route::post('ceshi/cartcory', 'OneWeek\\OneWeekController@cartcory');       //�
 Route::post('ceshi/corygoods', 'OneWeek\\OneWeekController@corygoods');       //测试根据分类查商品
 
 Route::post("weather","FourWeek\\FourWeekController@weather");       //调用天气接口
+Route::post("weatherlist","FourWeek\\FourWeekController@weatherlist");       //调用自己的天气接口
+Route::get("weatheradd","FourWeek\\FourWeekController@weatheradd");       //调用天气接口
 
 
